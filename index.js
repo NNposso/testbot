@@ -33,7 +33,7 @@ app.post('/webhook/', function (req, res) {
     res.sendStatus(200);
 });
 
-const token = process.env.PAGE_ACCESS_TOKEN;
+const token = process.env.$PAGE_ACCESS_TOKEN;
 
 function sendMessage(recipientId, message) {
     request({
