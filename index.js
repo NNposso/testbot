@@ -1,71 +1,64 @@
-'use strict'
-
-// for facebook verification
-aapp.get('/webhook', function(req, res) {
+app.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === 'testbot_verify_token') {
-    console.log("Validating webhook")
-    res.status(200).send(req.query['hub.challenge'])
+    console.log("Validating webhook");
+    res.status(200).send(req.query['hub.challenge']);
   } else {
-    console.error("Failed validation. Make sure the validation tokens match.")
-    res.sendStatus(403)          
+    console.error("Failed validation. Make sure the validation tokens match.");
+    res.sendStatus(403);          
   }  
-})
+});
 
-// to post data
 app.post('/webhook', function (req, res) {
-  var data = req.body
+  var data = req.body;
 
   // Make sure this is a page subscription
   if (data.object == 'page') {
     // Iterate over each entry
     // There may be multiple if batched
     data.entry.forEach(function(pageEntry) {
-      var pageID = pageEntry.id
-      var timeOfEvent = pageEntry.time
+      var pageID = pageEntry.id;
+      var timeOfEvent = pageEntry.time;
 
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
-          receivedAuthentication(messagingEvent)
+          receivedAuthentication(messagingEvent);
         } else if (messagingEvent.message) {
-          receivedMessage(messagingEvent)
+          receivedMessage(messagingEvent);
         } else if (messagingEvent.delivery) {
-          receivedDeliveryConfirmation(messagingEvent)
+          receivedDeliveryConfirmation(messagingEvent);
         } else if (messagingEvent.postback) {
-          receivedPostback(messagingEvent)
+          receivedPostback(messagingEvent);
         } else {
-          console.log("Webhook received unknown messagingEvent: ", messagingEvent)
+          console.log("Webhook received unknown messagingEvent: ", messagingEvent);
         }
-      })
-    })
+      });
+    });
 
     // Assume all went well.
     //
     // You must send back a 200, within 20 seconds, to let us know you've 
     // successfully received the callback. Otherwise, the request will time out.
-    res.sendStatus(200)
+    res.sendStatus(200);
   }
-})
+});
 
-
-// recommended to inject access tokens as environmental variables, e.g.
-// const token = process.env.PAGE_ACCESS_TOKEN
 function receivedMessage(event) {
-  var senderID = event.sender.id
-  var recipientID = event.recipient.id
-  var timeOfMessage = event.timestamp
-  var message = event.message
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfMessage = event.timestamp;
+  var message = event.message;
 
   console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage)
-  console.log(JSON.stringify(message))
+    senderID, recipientID, timeOfMessage);
+  console.log(JSON.stringify(message));
 
-  var messageId = message.mid
+  var messageId = message.mid;
 
   // You may get a text or attachment but not both
-  var messageText = message.text
-  var messageAttachments = message.attachments
+  var messageText = message.text;
+  var messageAttachments = message.attachments;
 
   if (messageText) {
 
@@ -74,26 +67,26 @@ function receivedMessage(event) {
     // the text we received.
     switch (messageText) {
       case 'image':
-        sendImageMessage(senderID)
+        sendImageMessage(senderID);
         break;
 
       case 'button':
-        sendButtonMessage(senderID)
+        sendButtonMessage(senderID);
         break;
 
       case 'generic':
-        sendGenericMessage(senderID)
+        sendGenericMessage(senderID);
         break;
 
       case 'receipt':
-        sendReceiptMessage(senderID)
+        sendReceiptMessage(senderID);
         break;
 
       default:
-        sendTextMessage(senderID, messageText)
+        sendTextMessage(senderID, messageText);
     }
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received")
+    sendTextMessage(senderID, "Message with attachment received");
   }
 }
 
@@ -105,10 +98,11 @@ function sendTextMessage(recipientId, messageText) {
     message: {
       text: messageText
     }
-  }
+  };
 
-  callSendAPI(messageData)
+  callSendAPI(messageData);
 }
+
 function callSendAPI(messageData) {
   request({
     uri: 'https://graph.facebook.com/v2.6/me/messages',
@@ -118,18 +112,19 @@ function callSendAPI(messageData) {
 
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id
-      var messageId = body.message_id
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
 
       console.log("Successfully sent generic message with id %s to recipient %s", 
-        messageId, recipientId)
+        messageId, recipientId);
     } else {
-      console.error("Unable to send message.")
-      console.error(response)
-      console.error(error)
+      console.error("Unable to send message.");
+      console.error(response);
+      console.error(error);
     }
   });  
 }
+
 function sendGenericMessage(recipientId) {
   var messageData = {
     recipient: {
@@ -172,24 +167,24 @@ function sendGenericMessage(recipientId) {
         }
       }
     }
-  }
+  };  
 
-  callSendAPI(messageData)
+  callSendAPI(messageData);
 }
+
 function receivedPostback(event) {
-  var senderID = event.sender.id
-  var recipientID = event.recipient.id
-  var timeOfPostback = event.timestamp
+  var senderID = event.sender.id;
+  var recipientID = event.recipient.id;
+  var timeOfPostback = event.timestamp;
+
   // The 'payload' param is a developer-defined field which is set in a postback 
   // button for Structured Messages. 
-  var payload = event.postback.payload
+  var payload = event.postback.payload;
 
   console.log("Received postback for user %d and page %d with payload '%s' " + 
-    "at %d", senderID, recipientID, payload, timeOfPostback)
+    "at %d", senderID, recipientID, payload, timeOfPostback);
 
   // When a postback is called, we'll send a message back to the sender to 
   // let them know it was successful
-  sendTextMessage(senderID, "Postback called")
+  sendTextMessage(senderID, "Postback called");
 }
-
-// spin spin sugar
