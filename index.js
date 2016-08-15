@@ -92,7 +92,7 @@ function sendGenericMessage(sender) {
             }, {
               type: "postback",
               title: "Call Postback",
-              text: "Payload for first bubble",
+              payload: "Post for first bubble",
             }],
           }, {
             title: "touch",
@@ -106,7 +106,7 @@ function sendGenericMessage(sender) {
             }, {
               type: "postback",
               title: "Call Postback",
-              text: "Payload for second bubble",
+              payload: "Print for second bubble",
             }]
           }]
         }
