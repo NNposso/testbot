@@ -1,3 +1,4 @@
+app.set('port', (process.env.PORT || 5000));
 app.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === 'testbot_verify_token') {
@@ -102,11 +103,11 @@ function sendTextMessage(recipientId, messageText) {
 
   callSendAPI(messageData);
 }
-
+const token = process.env.PAGE_ACCESS_TOKEN;
 function callSendAPI(messageData) {
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: PAGE_ACCESS_TOKEN },
+    qs: { access_token: token },
     method: 'POST',
     json: messageData
 
