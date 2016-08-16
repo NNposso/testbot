@@ -14,20 +14,3 @@
     "request": "^2.74.0"
   }
 }
-{
-  "sender":{
-    "id":"587428841436913"
-  },
-  "recipient":{
-    "id":"128019050977333"
-  },
-  "timestamp":1457764197627,
-  "message":{
-    "is_echo":true,
-    "app_id":577409475717410,
-    "metadata": "DEVELOPER_DEFINED_METADATA_STRING",
-    "mid":"mid.1457764197618:41d102a3e1ae206a38",
-    "seq":73,
-    "text":"hello, world!"
-  }
-}
