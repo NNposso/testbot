@@ -91,7 +91,7 @@ app.get('/webhook', function(req, res) {
       let event = req.body.entry[0].messaging[i]
       let sender = event.sender.id
       if (event.message && event.message.text) {
-        receivedMessage(event)
+        receivedMessage(req.body.entry[0].messaging[i])
       }
       
     }
