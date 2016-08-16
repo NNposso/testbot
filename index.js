@@ -397,16 +397,16 @@ function receivedMessageRead(event) {
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/account-linking
  * 
  */
-function receivedAccountLink(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
+// function receivedAccountLink(event) {
+//   var senderID = event.sender.id;
+//   var recipientID = event.recipient.id;
 
-  var status = event.account_linking.status;
-  var authCode = event.account_linking.authorization_code;
+//   var status = event.account_linking.status;
+//   var authCode = event.account_linking.authorization_code;
 
-  console.log("Received account link event with for user %d with status %s " +
-    "and auth code %s ", senderID, status, authCode);
-}
+//   console.log("Received account link event with for user %d with status %s " +
+//     "and auth code %s ", senderID, status, authCode);
+// }
 
 /*
  * Send an image using the Send API.
@@ -532,8 +532,30 @@ function sendTextMessage(recipientId, messageText) {
     }
   };
 
-  callSendAPI(messageData);
+  request({
+    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: { access_token: token },
+    method: 'POST',
+    json: messageData
+
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      var recipientId = body.recipient_id;
+      var messageId = body.message_id;
+
+      if (messageId) {
+        console.log("Successfully sent message with id %s to recipient %s", 
+          messageId, recipientId);
+      } else {
+      console.log("Successfully called Send API for recipient %s", 
+        recipientId);
+      }
+    } else {
+      console.error(response.error);
+    }
+  });  
 }
+
 
 /*
  * Send a button message using the Send API.
@@ -806,30 +828,30 @@ function sendTypingOff(recipientId) {
  * get the message id in a response 
  *
  */
-function callSendAPI(messageData) {
-  request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: { access_token: token },
-    method: 'POST',
-    json: messageData
+// function callSendAPI(messageData) {
+//   request({
+//     uri: 'https://graph.facebook.com/v2.6/me/messages',
+//     qs: { access_token: token },
+//     method: 'POST',
+//     json: messageData
 
-  }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
+//   }, function (error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       var recipientId = body.recipient_id;
+//       var messageId = body.message_id;
 
-      if (messageId) {
-        console.log("Successfully sent message with id %s to recipient %s", 
-          messageId, recipientId);
-      } else {
-      console.log("Successfully called Send API for recipient %s", 
-        recipientId);
-      }
-    } else {
-      console.error(response.error);
-    }
-  });  
-}
+//       if (messageId) {
+//         console.log("Successfully sent message with id %s to recipient %s", 
+//           messageId, recipientId);
+//       } else {
+//       console.log("Successfully called Send API for recipient %s", 
+//         recipientId);
+//       }
+//     } else {
+//       console.error(response.error);
+//     }
+//   });  
+// }
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid 
