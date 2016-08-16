@@ -90,7 +90,7 @@ app.get('/webhook', function(req, res) {
     for (let i = 0; i < messaging_events.length; i++) {
       var event = messaging_events[i];
       if (event.message && event.message.text) {
-        sendTextMessage(event.sender.id, event.message.text);
+        receivedMessage(event)
       }
       
     }
@@ -247,7 +247,7 @@ function receivedMessage(event) {
   var metadata = message.metadata
 
   // You may get a text or attachment but not both
-  var messageText = message.text
+  var messageText = event.message.text
   var messageAttachments = message.attachments
   var quickReply = message.quick_reply
 
