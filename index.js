@@ -55,6 +55,24 @@ const token = process.env.MESSENGER_PAGE_ACCESS_TOKEN
  * setup is the same token used here.
  *
  */
+app.get('/webhook', function(req, res) {
+  if (req.query['hub.verify_token'] === VALIDATION_TOKEN) {
+    console.log("Validating webhook")
+    res.status(200).send(req.query['hub.challenge'])
+  } else {
+    console.error("Failed validation. Make sure the validation tokens match.")
+    res.sendStatus(403)          
+  }  
+})
+
+
+/*
+ * All callbacks for Messenger are POST-ed. They will be sent to the same
+ * webhook. Be sure to subscribe your app to your page to receive callbacks
+ * for your page. 
+ * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
+ *
+ */
  app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
@@ -76,27 +94,6 @@ const token = process.env.MESSENGER_PAGE_ACCESS_TOKEN
     }
     res.sendStatus(200)
   })
-
-
-/*
- * All callbacks for Messenger are POST-ed. They will be sent to the same
- * webhook. Be sure to subscribe your app to your page to receive callbacks
- * for your page. 
- * https://developers.facebook.com/docs/messenger-platform/product-overview/setup#subscribe_app
- *
- */
-app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.entry[0].messaging
-    for (let i = 0 i < messaging_events.length i++) {
-        let event = req.body.entry[0].messaging[i]
-        let sender = event.sender.id
-        if (event.message && event.message.text) {
-            let text = event.message.text
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-        }
-    }
-    res.sendStatus(200)
-})
 // app.post('/webhook', function (req, res) {
 //   var data = req.body
 
