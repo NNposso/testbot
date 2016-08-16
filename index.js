@@ -39,6 +39,9 @@ app.post('/webhook/', function (req, res) {
 				continue
 			}
 			sendTextMessage(sender, text.substring(0, 200))
+			if (text==='karn'){
+			sendTextMessage(sender, "xdcfvgjm")
+			}
 		}
 		if (event.postback) {
 			let text = JSON.stringify(event.postback)
