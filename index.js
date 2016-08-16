@@ -103,13 +103,14 @@ app.post('/webhook', function (req, res) {
   data.entry.forEach(function(pageEntry) {
       var pageID = pageEntry.id
       var timeOfEvent = pageEntry.time
-
+      var sender = pageEntry.sender.id
+      var text = pageEntry.message.text
       // Iterate over each messaging event
-      pageID.messaging.forEach(function(messagingEvent) {
+      pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent)
         } else if (messagingEvent.message) {
-          receivedMessage(messagingEvent)
+          sendTextMessage(sender,text);
         } else if (messagingEvent.delivery) {
           receivedDeliveryConfirmation(messagingEvent)
         } else if (messagingEvent.postback) {
