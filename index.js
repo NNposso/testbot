@@ -436,8 +436,8 @@ function receivedAccountLink(event) {
 //     }
 //   };
 
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
 
 /*
  * Send audio using the Send API.
