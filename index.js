@@ -247,7 +247,7 @@ function receivedMessage(event) {
   var metadata = message.metadata
 
   // You may get a text or attachment but not both
-  var messageText = event.message.text
+  var messageText = message.text
   var messageAttachments = message.attachments
   var quickReply = message.quick_reply
 
