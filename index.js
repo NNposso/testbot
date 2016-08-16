@@ -84,20 +84,20 @@ app.get('/webhook', function(req, res) {
 //         }
 //     }
 //     res.sendStatus(200)
-// // })
-//  app.post('/webhook/', function (req, res) {
-//     let messaging_events = req.body.entry[0].messaging
-//     for (let i = 0; i < messaging_events.length; i++) {
-//       let event = req.body.entry[0].messaging[i]
-//       let sender = event.sender.id
-//       if (event.message && event.message.text) {
-//         let text = event.message.text
-//         sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-//       }
+// })
+ // app.post('/webhook/', function (req, res) {
+ //    let messaging_events = req.body.entry[0].messaging
+ //    for (let i = 0; i < messaging_events.length; i++) {
+ //      let event = req.body.entry[0].messaging[i]
+ //      let sender = event.sender.id
+ //      if (event.message && event.message.text) {
+ //        let text = event.message.text
+ //        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+ //      }
       
-//     }
-//     res.sendStatus(200)
-//   })
+ //    }
+ //    res.sendStatus(200)
+ //  })
 app.post('/webhook', function (req, res) {
   var data = req.body
 
@@ -108,13 +108,15 @@ app.post('/webhook', function (req, res) {
     data.entry.forEach(function(pageEntry) {
       var pageID = pageEntry.id
       var timeOfEvent = pageEntry.time
+      var sender = data.sender.id
+      var test = data.message.test
 
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent)
         } else if (messagingEvent.message) {
-          sendTextMessage(messagingEvent)
+          sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         } else if (messagingEvent.delivery) {
           receivedDeliveryConfirmation(messagingEvent)
         } else if (messagingEvent.postback) {
