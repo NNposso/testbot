@@ -92,9 +92,6 @@ app.get('/webhook', function(req, res) {
       if (event.message && event.message.text) {
         receivedMessage(event)
       }
-      else if (event.read){
-      	receivedMessageRead(event)
-      }
       else if (event.postback){
       	receivedPostback(event)
       }
@@ -396,17 +393,17 @@ function receivedPostback(event) {
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/message-read
  * 
  */
-function receivedMessageRead(event) {
-  var senderID = event.sender.id
-  var recipientID = event.recipient.id
+// function receivedMessageRead(event) {
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
 
-  // All messages before watermark (a timestamp) or sequence have been seen.
-  var watermark = event.read.watermark
-  var sequenceNumber = event.read.seq
+//   // All messages before watermark (a timestamp) or sequence have been seen.
+//   var watermark = event.read.watermark
+//   var sequenceNumber = event.read.seq
 
-  console.log("Received message read event for watermark %d and sequence " +
-    "number %d", watermark, sequenceNumber)
-}
+//   console.log("Received message read event for watermark %d and sequence " +
+//     "number %d", watermark, sequenceNumber)
+// }
 
 /*
  * Account Link Event
