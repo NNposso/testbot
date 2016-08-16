@@ -1,12 +1,11 @@
 'use strict'
 
-const 
-	bodyParser = require('body-parser'),
-  config = require('config'),
+const bodyParser = require('body-parser')
+const  config = require('config')
   // crypto = require('crypto'),
-  express = require('express'),
-  https = require('https'),  
-  request = require('request')
+ const express = require('express')
+ const https = require('https')
+ const request = require('request')
 
 var app = express()
 app.set('port', process.env.PORT || 5000)
