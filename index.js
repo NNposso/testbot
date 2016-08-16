@@ -1,20 +1,20 @@
 'use strict'
 
 const 
-  bodyParser = require('body-parser'),
+	bodyParser = require('body-parser'),
   config = require('config'),
   // crypto = require('crypto'),
   express = require('express'),
   https = require('https'),  
-  request = require('request');
+  request = require('request')
 
-var app = express();
-app.set('port', process.env.PORT || 5000);
-// app.set('view engine', 'ejs');
-// app.use(bodyParser.json({ verify: verifyRequestSignature }));
-// app.use(express.static('public'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+var app = express()
+app.set('port', process.env.PORT || 5000)
+// app.set('view engine', 'ejs')
+// app.use(bodyParser.json({ verify: verifyRequestSignature }))
+// app.use(express.static('public'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
 /*
  * Be sure to setup your config values before running this code. You can 
  * set them using environment variables or modifying the config file in /config.
@@ -24,27 +24,27 @@ app.use(bodyParser.urlencoded({extended: false}));
 // App Secret can be retrieved from the App Dashboard
 // const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
 //   process.env.MESSENGER_APP_SECRET :
-//   config.get('appSecret');
+//   config.get('appSecret')
 
 // Arbitrary value used to validate a webhook
 const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
   (process.env.MESSENGER_VALIDATION_TOKEN) :
-  config.get('validationToken');
+  config.get('validationToken')
 
 // Generate a page access token for your page from the App Dashboard
-const token = process.env.MESSENGER_PAGE_ACCESS_TOKEN;
+const token = process.env.MESSENGER_PAGE_ACCESS_TOKEN
   // (process.env.MESSENGER_PAGE_ACCESS_TOKEN) :
-  // config.get('pageAccessToken');
+  // config.get('pageAccessToken')
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
 // const SERVER_URL = (process.env.SERVER_URL) ?
 //   (process.env.SERVER_URL) :
-//   config.get('serverURL');
+//   config.get('serverURL')
 
 // if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
-//   console.error("Missing config values");
-//   process.exit(1);
+//   console.error("Missing config values")
+//   process.exit(1)
 // }
 
 
@@ -56,13 +56,13 @@ const token = process.env.MESSENGER_PAGE_ACCESS_TOKEN;
 app.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === VALIDATION_TOKEN) {
-    console.log("Validating webhook");
-    res.status(200).send(req.query['hub.challenge']);
+    console.log("Validating webhook")
+    res.status(200).send(req.query['hub.challenge'])
   } else {
-    console.error("Failed validation. Make sure the validation tokens match.");
-    res.sendStatus(403);          
+    console.error("Failed validation. Make sure the validation tokens match.")
+    res.sendStatus(403)          
   }  
-});
+})
 
 
 /*
@@ -73,55 +73,55 @@ app.get('/webhook', function(req, res) {
  *
  */
 app.post('/webhook/', function (req, res) {
-    let messaging_events = req.body.entry[0].messaging;
-    for (let i = 0; i < messaging_events.length; i++) {
-        let event = req.body.entry[0].messaging[i];
-        let sender = event.sender.id;
+    let messaging_events = req.body.entry[0].messaging
+    for (let i = 0 i < messaging_events.length i++) {
+        let event = req.body.entry[0].messaging[i]
+        let sender = event.sender.id
         if (event.message && event.message.text) {
-            let text = event.message.text;
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+            let text = event.message.text
+            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
     }
-    res.sendStatus(200);
-});
+    res.sendStatus(200)
+})
 // app.post('/webhook', function (req, res) {
-//   var data = req.body;
+//   var data = req.body
 
 //   // Make sure this is a page subscription
 //   if (data.object == 'page') {
 //     // Iterate over each entry
 //     // There may be multiple if batched
 //     data.entry.forEach(function(pageEntry) {
-//       var pageID = pageEntry.id;
-//       var timeOfEvent = pageEntry.time;
+//       var pageID = pageEntry.id
+//       var timeOfEvent = pageEntry.time
 
 //       // Iterate over each messaging event
 //       pageEntry.messaging.forEach(function(messagingEvent) {
 //         if (messagingEvent.optin) {
-//           receivedAuthentication(messagingEvent);
+//           receivedAuthentication(messagingEvent)
 //         } else if (messagingEvent.message) {
-//           receivedMessage(messagingEvent);
+//           receivedMessage(messagingEvent)
 //         } else if (messagingEvent.delivery) {
-//           receivedDeliveryConfirmation(messagingEvent);
+//           receivedDeliveryConfirmation(messagingEvent)
 //         } else if (messagingEvent.postback) {
-//           receivedPostback(messagingEvent);
+//           receivedPostback(messagingEvent)
 //         } else if (messagingEvent.read) {
-//           receivedMessageRead(messagingEvent);
+//           receivedMessageRead(messagingEvent)
 //         } else if (messagingEvent.account_linking) {
-//           receivedAccountLink(messagingEvent);
+//           receivedAccountLink(messagingEvent)
 //         } else {
-//           console.log("Webhook received unknown messagingEvent: ", messagingEvent);
+//           console.log("Webhook received unknown messagingEvent: ", messagingEvent)
 //         }
-//       });
-//     });
+//       })
+//     })
 
 //     // Assume all went well.
 //     //
 //     // You must send back a 200, within 20 seconds, to let us know you've 
 //     // successfully received the callback. Otherwise, the request will time out.
-//     res.sendStatus(200);
+//     res.sendStatus(200)
 //   }
-// });
+// })
 
 /*
  * This path is used for account linking. The account linking call-to-action
@@ -129,22 +129,22 @@ app.post('/webhook/', function (req, res) {
  * 
  */
 // app.get('/authorize', function(req, res) {
-//   var accountLinkingToken = req.query['account_linking_token'];
-//   var redirectURI = req.query['redirect_uri'];
+//   var accountLinkingToken = req.query['account_linking_token']
+//   var redirectURI = req.query['redirect_uri']
 
 //   // Authorization Code should be generated per user by the developer. This will 
 //   // be passed to the Account Linking callback.
-//   var authCode = "1234567890";
+//   var authCode = "1234567890"
 
 //   // Redirect users to this URI on successful login
-//   var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
+//   var redirectURISuccess = redirectURI + "&authorization_code=" + authCode
 
 //   res.render('authorize', {
 //     accountLinkingToken: accountLinkingToken,
 //     redirectURI: redirectURI,
 //     redirectURISuccess: redirectURISuccess
-//   });
-// });
+//   })
+// })
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from 
@@ -155,23 +155,23 @@ app.post('/webhook/', function (req, res) {
  *
  */
 // function verifyRequestSignature(req, res, buf) {
-//   var signature = req.headers["x-hub-signature"];
+//   var signature = req.headers["x-hub-signature"]
 
 //   if (!signature) {
 //     // For testing, let's log an error. In production, you should throw an 
 //     // error.
-//     console.error("Couldn't validate the signature.");
+//     console.error("Couldn't validate the signature.")
 //   } else {
-//     var elements = signature.split('=');
-//     var method = elements[0];
-//     var signatureHash = elements[1];
+//     var elements = signature.split('=')
+//     var method = elements[0]
+//     var signatureHash = elements[1]
 
 //     var expectedHash = crypto.createHmac('sha1', APP_SECRET)
 //                         .update(buf)
-//                         .digest('hex');
+//                         .digest('hex')
 
 //     if (signatureHash != expectedHash) {
-//       throw new Error("Couldn't validate the request signature.");
+//       throw new Error("Couldn't validate the request signature.")
 //     }
 //   }
 // }
@@ -185,24 +185,24 @@ app.post('/webhook/', function (req, res) {
  *
  */
 // function receivedAuthentication(event) {
-//   var senderID = event.sender.id;
-//   var recipientID = event.recipient.id;
-//   var timeOfAuth = event.timestamp;
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
+//   var timeOfAuth = event.timestamp
 
 //   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
 //   // The developer can set this to an arbitrary value to associate the 
 //   // authentication callback with the 'Send to Messenger' click event. This is
 //   // a way to do account linking when the user clicks the 'Send to Messenger' 
 //   // plugin.
-//   var passThroughParam = event.optin.ref;
+//   var passThroughParam = event.optin.ref
 
 //   console.log("Received authentication for user %d and page %d with pass " +
 //     "through param '%s' at %d", senderID, recipientID, passThroughParam, 
-//     timeOfAuth);
+//     timeOfAuth)
 
 //   // When an authentication is received, we'll send a message back to the sender
 //   // to let them know it was successful.
-//   sendTextMessage(senderID, "Authentication successful");
+//   sendTextMessage(senderID, "Authentication successful")
 // }
 
 /*
@@ -220,37 +220,37 @@ app.post('/webhook/', function (req, res) {
  * 
  */
 // function receivedMessage(event) {
-//   var senderID = event.sender.id;
-//   var recipientID = event.recipient.id;
-//   var timeOfMessage = event.timestamp;
-//   var message = event.message;
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
+//   var timeOfMessage = event.timestamp
+//   var message = event.message
 
 //   console.log("Received message for user %d and page %d at %d with message:", 
-//     senderID, recipientID, timeOfMessage);
-//   console.log(JSON.stringify(message));
+//     senderID, recipientID, timeOfMessage)
+//   console.log(JSON.stringify(message))
 
-//   var isEcho = message.is_echo;
-//   var messageId = message.mid;
-//   var appId = message.app_id;
-//   var metadata = message.metadata;
+//   var isEcho = message.is_echo
+//   var messageId = message.mid
+//   var appId = message.app_id
+//   var metadata = message.metadata
 
 //   // You may get a text or attachment but not both
-//   var messageText = message.text;
-//   var messageAttachments = message.attachments;
-//   var quickReply = message.quick_reply;
+//   var messageText = message.text
+//   var messageAttachments = message.attachments
+//   var quickReply = message.quick_reply
 
 //   if (isEcho) {
 //     // Just logging message echoes to console
 //     console.log("Received echo for message %s and app %d with metadata %s", 
-//       messageId, appId, metadata);
-//     return;
+//       messageId, appId, metadata)
+//     return
 //   } else if (quickReply) {
-//     var quickReplyPayload = quickReply.payload;
+//     var quickReplyPayload = quickReply.payload
 //     console.log("Quick reply for message %s with payload %s",
-//       messageId, quickReplyPayload);
+//       messageId, quickReplyPayload)
 
-//     sendTextMessage(senderID, "Quick reply tapped");
-//     return;
+//     sendTextMessage(senderID, "Quick reply tapped")
+//     return
 //   }
 
 //   if (messageText) {
@@ -260,62 +260,62 @@ app.post('/webhook/', function (req, res) {
 //     // the text we received.
 //     switch (messageText) {
 //       case 'image':
-//         sendImageMessage(senderID);
-//         break;
+//         sendImageMessage(senderID)
+//         break
 
 //       case 'gif':
-//         sendGifMessage(senderID);
-//         break;
+//         sendGifMessage(senderID)
+//         break
 
 //       case 'audio':
-//         sendAudioMessage(senderID);
-//         break;
+//         sendAudioMessage(senderID)
+//         break
 
 //       case 'video':
-//         sendVideoMessage(senderID);
-//         break;
+//         sendVideoMessage(senderID)
+//         break
 
 //       case 'file':
-//         sendFileMessage(senderID);
-//         break;
+//         sendFileMessage(senderID)
+//         break
 
 //       case 'button':
-//         sendButtonMessage(senderID);
-//         break;
+//         sendButtonMessage(senderID)
+//         break
 
 //       case 'generic':
-//         sendGenericMessage(senderID);
-//         break;
+//         sendGenericMessage(senderID)
+//         break
 
 //       case 'receipt':
-//         sendReceiptMessage(senderID);
-//         break;
+//         sendReceiptMessage(senderID)
+//         break
 
 //       case 'quick reply':
-//         sendQuickReply(senderID);
-//         break;        
+//         sendQuickReply(senderID)
+//         break        
 
 //       case 'read receipt':
-//         sendReadReceipt(senderID);
-//         break;        
+//         sendReadReceipt(senderID)
+//         break        
 
 //       case 'typing on':
-//         sendTypingOn(senderID);
-//         break;        
+//         sendTypingOn(senderID)
+//         break        
 
 //       case 'typing off':
-//         sendTypingOff(senderID);
-//         break;        
+//         sendTypingOff(senderID)
+//         break        
 
 //       case 'account linking':
-//         sendAccountLinking(senderID);
-//         break;
+//         sendAccountLinking(senderID)
+//         break
 
 //       default:
-//         sendTextMessage(senderID, messageText);
+//         sendTextMessage(senderID, messageText)
 //     }
 //   } else if (messageAttachments) {
-//     sendTextMessage(senderID, "Message with attachment received");
+//     sendTextMessage(senderID, "Message with attachment received")
 //   }
 // }
 
@@ -328,21 +328,21 @@ app.post('/webhook/', function (req, res) {
  *
  */
 // function receivedDeliveryConfirmation(event) {
-//   var senderID = event.sender.id;
-//   var recipientID = event.recipient.id;
-//   var delivery = event.delivery;
-//   var messageIDs = delivery.mids;
-//   var watermark = delivery.watermark;
-//   var sequenceNumber = delivery.seq;
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
+//   var delivery = event.delivery
+//   var messageIDs = delivery.mids
+//   var watermark = delivery.watermark
+//   var sequenceNumber = delivery.seq
 
 //   if (messageIDs) {
 //     messageIDs.forEach(function(messageID) {
 //       console.log("Received delivery confirmation for message ID: %s", 
-//         messageID);
-//     });
+//         messageID)
+//     })
 //   }
 
-//   console.log("All message before %d were delivered.", watermark);
+//   console.log("All message before %d were delivered.", watermark)
 // }
 
 
@@ -354,20 +354,20 @@ app.post('/webhook/', function (req, res) {
  * 
  */
 // function receivedPostback(event) {
-//   var senderID = event.sender.id;
-//   var recipientID = event.recipient.id;
-//   var timeOfPostback = event.timestamp;
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
+//   var timeOfPostback = event.timestamp
 
 //   // The 'payload' param is a developer-defined field which is set in a postback 
 //   // button for Structured Messages. 
-//   var payload = event.postback.payload;
+//   var payload = event.postback.payload
 
 //   console.log("Received postback for user %d and page %d with payload '%s' " + 
-//     "at %d", senderID, recipientID, payload, timeOfPostback);
+//     "at %d", senderID, recipientID, payload, timeOfPostback)
 
 //   // When a postback is called, we'll send a message back to the sender to 
 //   // let them know it was successful
-//   sendTextMessage(senderID, "Postback called");
+//   sendTextMessage(senderID, "Postback called")
 // }
 
 /*
@@ -378,15 +378,15 @@ app.post('/webhook/', function (req, res) {
  * 
  */
 // function receivedMessageRead(event) {
-//   var senderID = event.sender.id;
-//   var recipientID = event.recipient.id;
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
 
 //   // All messages before watermark (a timestamp) or sequence have been seen.
-//   var watermark = event.read.watermark;
-//   var sequenceNumber = event.read.seq;
+//   var watermark = event.read.watermark
+//   var sequenceNumber = event.read.seq
 
 //   console.log("Received message read event for watermark %d and sequence " +
-//     "number %d", watermark, sequenceNumber);
+//     "number %d", watermark, sequenceNumber)
 // }
 
 /*
@@ -398,14 +398,14 @@ app.post('/webhook/', function (req, res) {
  * 
  */
 // function receivedAccountLink(event) {
-//   var senderID = event.sender.id;
-//   var recipientID = event.recipient.id;
+//   var senderID = event.sender.id
+//   var recipientID = event.recipient.id
 
-//   var status = event.account_linking.status;
-//   var authCode = event.account_linking.authorization_code;
+//   var status = event.account_linking.status
+//   var authCode = event.account_linking.authorization_code
 
 //   console.log("Received account link event with for user %d with status %s " +
-//     "and auth code %s ", senderID, status, authCode);
+//     "and auth code %s ", senderID, status, authCode)
 // }
 
 /*
@@ -425,9 +425,9 @@ app.post('/webhook/', function (req, res) {
 //         }
 //       }
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -447,9 +447,9 @@ app.post('/webhook/', function (req, res) {
 //         }
 //       }
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -469,9 +469,9 @@ app.post('/webhook/', function (req, res) {
 //         }
 //       }
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -491,9 +491,9 @@ app.post('/webhook/', function (req, res) {
 //         }
 //       }
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -513,9 +513,9 @@ app.post('/webhook/', function (req, res) {
 //         }
 //       }
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -530,9 +530,9 @@ function sendTextMessage(recipientId, messageText) {
     message: {
       text: messageText
     }
-  };
+  }
 
-  callSendAPI(messageData);
+  callSendAPI(messageData)
 }
 
 /*
@@ -566,9 +566,9 @@ function sendTextMessage(recipientId, messageText) {
 //         }
 //       }
 //     }
-//   };  
+//   }  
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -617,9 +617,9 @@ function sendTextMessage(recipientId, messageText) {
 //         }
 //       }
 //     }
-//   };  
+//   }  
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -628,7 +628,7 @@ function sendTextMessage(recipientId, messageText) {
  */
 // function sendReceiptMessage(recipientId) {
 //   // Generate a random receipt ID as the API requires a unique ID
-//   var receiptId = "order" + Math.floor(Math.random()*1000);
+//   var receiptId = "order" + Math.floor(Math.random()*1000)
 
 //   var messageData = {
 //     recipient: {
@@ -683,9 +683,9 @@ function sendTextMessage(recipientId, messageText) {
 //         }
 //       }
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -718,9 +718,9 @@ function sendTextMessage(recipientId, messageText) {
 //         }
 //       ]
 //     }
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -728,16 +728,16 @@ function sendTextMessage(recipientId, messageText) {
  *
  */
 // function sendReadReceipt(recipientId) {
-//   console.log("Sending a read receipt to mark message as seen");
+//   console.log("Sending a read receipt to mark message as seen")
 
 //   var messageData = {
 //     recipient: {
 //       id: recipientId
 //     },
 //     sender_action: "mark_seen"
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -745,16 +745,16 @@ function sendTextMessage(recipientId, messageText) {
  *
  */
 // function sendTypingOn(recipientId) {
-//   console.log("Turning typing indicator on");
+//   console.log("Turning typing indicator on")
 
 //   var messageData = {
 //     recipient: {
 //       id: recipientId
 //     },
 //     sender_action: "typing_on"
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -762,16 +762,16 @@ function sendTextMessage(recipientId, messageText) {
  *
  */
 // function sendTypingOff(recipientId) {
-//   console.log("Turning typing indicator off");
+//   console.log("Turning typing indicator off")
 
 //   var messageData = {
 //     recipient: {
 //       id: recipientId
 //     },
 //     sender_action: "typing_off"
-//   };
+//   }
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -796,9 +796,9 @@ function sendTextMessage(recipientId, messageText) {
 //         }
 //       }
 //     }
-//   };  
+//   }  
 
-//   callSendAPI(messageData);
+//   callSendAPI(messageData)
 // }
 
 /*
@@ -815,27 +815,27 @@ function callSendAPI(messageData) {
 
   }, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      var recipientId = body.recipient_id;
-      var messageId = body.message_id;
+      var recipientId = body.recipient_id
+      var messageId = body.message_id
 
       if (messageId) {
         console.log("Successfully sent message with id %s to recipient %s", 
-          messageId, recipientId);
+          messageId, recipientId)
       } else {
       console.log("Successfully called Send API for recipient %s", 
-        recipientId);
+        recipientId)
       }
     } else {
-      console.error(response.error);
+      console.error(response.error)
     }
-  });  
+  })  
 }
 
 // Start server
 // Webhooks must be available via SSL with a certificate signed by a valid 
 // certificate authority.
 app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+  console.log('Node app is running on port', app.get('port'))
+})
 
-// module.exports = app;
+// module.exports = app
