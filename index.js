@@ -85,19 +85,19 @@ app.get('/webhook', function(req, res) {
 //     }
 //     res.sendStatus(200)
 // })
- // app.post('/webhook/', function (req, res) {
- //    let messaging_events = req.body.entry[0].messaging
- //    for (let i = 0; i < messaging_events.length; i++) {
- //      let event = req.body.entry[0].messaging[i]
- //      let sender = event.sender.id
- //      if (event.message && event.message.text) {
- //        let text = event.message.text
- //        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
- //      }
+ app.post('/webhook/', function (req, res) {
+    let messaging_events = req.body.entry[0].messaging
+    for (let i = 0; i < messaging_events.length; i++) {
+      let event = req.body.entry[0].messaging[i]
+      let sender = event.sender.id
+      if (event.message && event.message.text) {
+        let text = event.message.text
+        sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+      }
       
- //    }
- //    res.sendStatus(200)
- //  })
+    }
+    res.sendStatus(200)
+  })
 app.post('/webhook', function (req, res) {
   var data = req.body
 
@@ -108,15 +108,13 @@ app.post('/webhook', function (req, res) {
     data.entry.forEach(function(pageEntry) {
       var pageID = pageEntry.id
       var timeOfEvent = pageEntry.time
-      var sender = data.sender.id
-      var test = data.message.test
 
       // Iterate over each messaging event
       pageEntry.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent)
         } else if (messagingEvent.message) {
-          sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+          receivedMessage(messagingEvent)
         } else if (messagingEvent.delivery) {
           receivedDeliveryConfirmation(messagingEvent)
         } else if (messagingEvent.postback) {
@@ -235,105 +233,105 @@ app.post('/webhook', function (req, res) {
  * then we'll simply confirm that we've received the attachment.
  * 
  */
-// function receivedMessage(event) {
-//   var senderID = event.sender.id
-//   var recipientID = event.recipient.id
-//   var timeOfMessage = event.timestamp
-//   var message = event.message
+function receivedMessage(event) {
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var timeOfMessage = event.timestamp
+  var message = event.message
 
-//   console.log("Received message for user %d and page %d at %d with message:", 
-//     senderID, recipientID, timeOfMessage)
-//   console.log(JSON.stringify(message))
+  console.log("Received message for user %d and page %d at %d with message:", 
+    senderID, recipientID, timeOfMessage)
+  console.log(JSON.stringify(message))
 
-//   var isEcho = message.is_echo
-//   var messageId = message.mid
-//   var appId = message.app_id
-//   var metadata = message.metadata
+  var isEcho = message.is_echo
+  var messageId = message.mid
+  var appId = message.app_id
+  var metadata = message.metadata
 
-//   // You may get a text or attachment but not both
-//   var messageText = message.text
-//   var messageAttachments = message.attachments
-//   var quickReply = message.quick_reply
+  // You may get a text or attachment but not both
+  var messageText = message.text
+  var messageAttachments = message.attachments
+  var quickReply = message.quick_reply
 
-//   if (isEcho) {
-//     // Just logging message echoes to console
-//     console.log("Received echo for message %s and app %d with metadata %s", 
-//       messageId, appId, metadata)
-//     return
-//   } else if (quickReply) {
-//     var quickReplyPayload = quickReply.payload
-//     console.log("Quick reply for message %s with payload %s",
-//       messageId, quickReplyPayload)
+  if (isEcho) {
+    // Just logging message echoes to console
+    console.log("Received echo for message %s and app %d with metadata %s", 
+      messageId, appId, metadata)
+    return
+  } else if (quickReply) {
+    var quickReplyPayload = quickReply.payload
+    console.log("Quick reply for message %s with payload %s",
+      messageId, quickReplyPayload)
 
-//     sendTextMessage(senderID, "Quick reply tapped")
-//     return
-//   }
+    sendTextMessage(senderID, "Quick reply tapped")
+    return
+  }
 
-//   if (messageText) {
+  if (messageText) {
 
-//     // If we receive a text message, check to see if it matches any special
-//     // keywords and send back the corresponding example. Otherwise, just echo
-//     // the text we received.
-//     switch (messageText) {
-//       case 'image':
-//         sendImageMessage(senderID)
-//         break
+    // If we receive a text message, check to see if it matches any special
+    // keywords and send back the corresponding example. Otherwise, just echo
+    // the text we received.
+    switch (messageText) {
+      case 'image':
+        sendImageMessage(senderID)
+        break
 
-//       case 'gif':
-//         sendGifMessage(senderID)
-//         break
+      case 'gif':
+        sendGifMessage(senderID)
+        break
 
-//       case 'audio':
-//         sendAudioMessage(senderID)
-//         break
+      case 'audio':
+        sendAudioMessage(senderID)
+        break
 
-//       case 'video':
-//         sendVideoMessage(senderID)
-//         break
+      case 'video':
+        sendVideoMessage(senderID)
+        break
 
-//       case 'file':
-//         sendFileMessage(senderID)
-//         break
+      case 'file':
+        sendFileMessage(senderID)
+        break
 
-//       case 'button':
-//         sendButtonMessage(senderID)
-//         break
+      case 'button':
+        sendButtonMessage(senderID)
+        break
 
-//       case 'generic':
-//         sendGenericMessage(senderID)
-//         break
+      case 'generic':
+        sendGenericMessage(senderID)
+        break
 
-//       case 'receipt':
-//         sendReceiptMessage(senderID)
-//         break
+      case 'receipt':
+        sendReceiptMessage(senderID)
+        break
 
-//       case 'quick reply':
-//         sendQuickReply(senderID)
-//         break        
+      case 'quick reply':
+        sendQuickReply(senderID)
+        break        
 
-//       case 'read receipt':
-//         sendReadReceipt(senderID)
-//         break        
+      case 'read receipt':
+        sendReadReceipt(senderID)
+        break        
 
-//       case 'typing on':
-//         sendTypingOn(senderID)
-//         break        
+      case 'typing on':
+        sendTypingOn(senderID)
+        break        
 
-//       case 'typing off':
-//         sendTypingOff(senderID)
-//         break        
+      case 'typing off':
+        sendTypingOff(senderID)
+        break        
 
-//       case 'account linking':
-//         sendAccountLinking(senderID)
-//         break
+      case 'account linking':
+        sendAccountLinking(senderID)
+        break
 
-//       default:
-//         sendTextMessage(senderID, messageText)
-//     }
-//   } else if (messageAttachments) {
-//     sendTextMessage(senderID, "Message with attachment received")
-//   }
-// }
+      default:
+        sendTextMessage(senderID, messageText)
+    }
+  } else if (messageAttachments) {
+    sendTextMessage(senderID, "Message with attachment received")
+  }
+}
 
 
 /*
