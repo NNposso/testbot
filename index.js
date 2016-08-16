@@ -302,7 +302,7 @@ function receivedMessage(event) {
         break
 
       case 'generic':
-        sendGenericMessage(recipientID)
+        sendGenericMessage(senderID)
         break
 
       case 'receipt':
