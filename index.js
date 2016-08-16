@@ -105,7 +105,7 @@ app.post('/webhook', function (req, res) {
       var timeOfEvent = pageEntry.time
 
       // Iterate over each messaging event
-      pageEntry.messaging.forEach(function(messagingEvent) {
+      pageID.messaging.forEach(function(messagingEvent) {
         if (messagingEvent.optin) {
           receivedAuthentication(messagingEvent)
         } else if (messagingEvent.message) {
