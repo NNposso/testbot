@@ -21,9 +21,9 @@ app.use(express.static('public'));
  */
 
 // App Secret can be retrieved from the App Dashboard
-const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
-  process.env.MESSENGER_APP_SECRET :
-  config.get('appSecret');
+// const APP_SECRET = (process.env.MESSENGER_APP_SECRET) ? 
+//   process.env.MESSENGER_APP_SECRET :
+//   config.get('appSecret');
 
 // Arbitrary value used to validate a webhook
 const VALIDATION_TOKEN = (process.env.MESSENGER_VALIDATION_TOKEN) ?
@@ -37,13 +37,13 @@ const token = (process.env.MESSENGER_PAGE_ACCESS_TOKEN) ?
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
-const SERVER_URL = (process.env.SERVER_URL) ?
-  (process.env.SERVER_URL) :
-  config.get('serverURL');
+// const SERVER_URL = (process.env.SERVER_URL) ?
+//   (process.env.SERVER_URL) :
+//   config.get('serverURL');
 
-if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
-  console.error("Missing config values");
-  process.exit(1);
+// if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
+//   console.error("Missing config values");
+//   process.exit(1);
 // }
 
 
@@ -115,23 +115,23 @@ app.post('/webhook', function (req, res) {
  * (sendAccountLinking) is pointed to this URL. 
  * 
  */
-app.get('/authorize', function(req, res) {
-  var accountLinkingToken = req.query['account_linking_token'];
-  var redirectURI = req.query['redirect_uri'];
+// app.get('/authorize', function(req, res) {
+//   var accountLinkingToken = req.query['account_linking_token'];
+//   var redirectURI = req.query['redirect_uri'];
 
-  // Authorization Code should be generated per user by the developer. This will 
-  // be passed to the Account Linking callback.
-  var authCode = "1234567890";
+//   // Authorization Code should be generated per user by the developer. This will 
+//   // be passed to the Account Linking callback.
+//   var authCode = "1234567890";
 
-  // Redirect users to this URI on successful login
-  var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
+//   // Redirect users to this URI on successful login
+//   var redirectURISuccess = redirectURI + "&authorization_code=" + authCode;
 
-  res.render('authorize', {
-    accountLinkingToken: accountLinkingToken,
-    redirectURI: redirectURI,
-    redirectURISuccess: redirectURISuccess
-  });
-});
+//   res.render('authorize', {
+//     accountLinkingToken: accountLinkingToken,
+//     redirectURI: redirectURI,
+//     redirectURISuccess: redirectURISuccess
+//   });
+// });
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from 
@@ -141,27 +141,27 @@ app.get('/authorize', function(req, res) {
  * https://developers.facebook.com/docs/graph-api/webhooks#setup
  *
  */
-function verifyRequestSignature(req, res, buf) {
-  var signature = req.headers["x-hub-signature"];
+// function verifyRequestSignature(req, res, buf) {
+//   var signature = req.headers["x-hub-signature"];
 
-  if (!signature) {
-    // For testing, let's log an error. In production, you should throw an 
-    // error.
-    console.error("Couldn't validate the signature.");
-  } else {
-    var elements = signature.split('=');
-    var method = elements[0];
-    var signatureHash = elements[1];
+//   if (!signature) {
+//     // For testing, let's log an error. In production, you should throw an 
+//     // error.
+//     console.error("Couldn't validate the signature.");
+//   } else {
+//     var elements = signature.split('=');
+//     var method = elements[0];
+//     var signatureHash = elements[1];
 
-    var expectedHash = crypto.createHmac('sha1', APP_SECRET)
-                        .update(buf)
-                        .digest('hex');
+//     var expectedHash = crypto.createHmac('sha1', APP_SECRET)
+//                         .update(buf)
+//                         .digest('hex');
 
-    if (signatureHash != expectedHash) {
-      throw new Error("Couldn't validate the request signature.");
-    }
-  }
-}
+//     if (signatureHash != expectedHash) {
+//       throw new Error("Couldn't validate the request signature.");
+//     }
+//   }
+// }
 
 /*
  * Authorization Event
@@ -171,26 +171,26 @@ function verifyRequestSignature(req, res, buf) {
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
  *
  */
-function receivedAuthentication(event) {
-  var senderID = event.sender.id;
-  var recipientID = event.recipient.id;
-  var timeOfAuth = event.timestamp;
+// function receivedAuthentication(event) {
+//   var senderID = event.sender.id;
+//   var recipientID = event.recipient.id;
+//   var timeOfAuth = event.timestamp;
 
-  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-  // The developer can set this to an arbitrary value to associate the 
-  // authentication callback with the 'Send to Messenger' click event. This is
-  // a way to do account linking when the user clicks the 'Send to Messenger' 
-  // plugin.
-  var passThroughParam = event.optin.ref;
+//   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
+//   // The developer can set this to an arbitrary value to associate the 
+//   // authentication callback with the 'Send to Messenger' click event. This is
+//   // a way to do account linking when the user clicks the 'Send to Messenger' 
+//   // plugin.
+//   var passThroughParam = event.optin.ref;
 
-  console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam, 
-    timeOfAuth);
+//   console.log("Received authentication for user %d and page %d with pass " +
+//     "through param '%s' at %d", senderID, recipientID, passThroughParam, 
+//     timeOfAuth);
 
-  // When an authentication is received, we'll send a message back to the sender
-  // to let them know it was successful.
-  sendTextMessage(senderID, "Authentication successful");
-}
+//   // When an authentication is received, we'll send a message back to the sender
+//   // to let them know it was successful.
+//   sendTextMessage(senderID, "Authentication successful");
+// }
 
 /*
  * Message Event
@@ -399,42 +399,42 @@ function receivedAccountLink(event) {
  * Send an image using the Send API.
  *
  */
-function sendImageMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          url: SERVER_URL + "/assets/rift.png"
-        }
-      }
-    }
-  };
+// function sendImageMessage(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "image",
+//         payload: {
+//           url: SERVER_URL + "/assets/rift.png"
+//         }
+//       }
+//     }
+//   };
 
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
 
 /*
  * Send a Gif using the Send API.
  *
  */
-function sendGifMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "image",
-        payload: {
-          url: SERVER_URL + "/assets/instagram_logo.gif"
-        }
-      }
-    }
-  };
+// function sendGifMessage(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "image",
+//         payload: {
+//           url: SERVER_URL + "/assets/instagram_logo.gif"
+//         }
+//       }
+//     }
+//   };
 
   callSendAPI(messageData);
 }
@@ -443,67 +443,67 @@ function sendGifMessage(recipientId) {
  * Send audio using the Send API.
  *
  */
-function sendAudioMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "audio",
-        payload: {
-          url: SERVER_URL + "/assets/sample.mp3"
-        }
-      }
-    }
-  };
+// function sendAudioMessage(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "audio",
+//         payload: {
+//           url: SERVER_URL + "/assets/sample.mp3"
+//         }
+//       }
+//     }
+//   };
 
-  callSendAPI(messageData);
-}
-
-/*
- * Send a video using the Send API.
- *
- */
-function sendVideoMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "video",
-        payload: {
-          url: SERVER_URL + "/assets/allofus480.mov"
-        }
-      }
-    }
-  };
-
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
 
 /*
  * Send a video using the Send API.
  *
  */
-function sendFileMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "file",
-        payload: {
-          url: SERVER_URL + "/assets/test.txt"
-        }
-      }
-    }
-  };
+// function sendVideoMessage(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "video",
+//         payload: {
+//           url: SERVER_URL + "/assets/allofus480.mov"
+//         }
+//       }
+//     }
+//   };
 
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
+
+/*
+ * Send a video using the Send API.
+ *
+ */
+// function sendFileMessage(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "file",
+//         payload: {
+//           url: SERVER_URL + "/assets/test.txt"
+//         }
+//       }
+//     }
+//   };
+
+//   callSendAPI(messageData);
+// }
 
 /*
  * Send a text message using the Send API.
@@ -563,118 +563,118 @@ function sendButtonMessage(recipientId) {
  * Send a Structured Message (Generic Message type) using the Send API.
  *
  */
-function sendGenericMessage(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: SERVER_URL + "/assets/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",               
-            image_url: SERVER_URL + "/assets/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
-        }
-      }
-    }
-  };  
+// function sendGenericMessage(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "template",
+//         payload: {
+//           template_type: "generic",
+//           elements: [{
+//             title: "rift",
+//             subtitle: "Next-generation virtual reality",
+//             item_url: "https://www.oculus.com/en-us/rift/",               
+//             image_url: SERVER_URL + "/assets/rift.png",
+//             buttons: [{
+//               type: "web_url",
+//               url: "https://www.oculus.com/en-us/rift/",
+//               title: "Open Web URL"
+//             }, {
+//               type: "postback",
+//               title: "Call Postback",
+//               payload: "Payload for first bubble",
+//             }],
+//           }, {
+//             title: "touch",
+//             subtitle: "Your Hands, Now in VR",
+//             item_url: "https://www.oculus.com/en-us/touch/",               
+//             image_url: SERVER_URL + "/assets/touch.png",
+//             buttons: [{
+//               type: "web_url",
+//               url: "https://www.oculus.com/en-us/touch/",
+//               title: "Open Web URL"
+//             }, {
+//               type: "postback",
+//               title: "Call Postback",
+//               payload: "Payload for second bubble",
+//             }]
+//           }]
+//         }
+//       }
+//     }
+//   };  
 
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
 
 /*
  * Send a receipt message using the Send API.
  *
  */
-function sendReceiptMessage(recipientId) {
-  // Generate a random receipt ID as the API requires a unique ID
-  var receiptId = "order" + Math.floor(Math.random()*1000);
+// function sendReceiptMessage(recipientId) {
+//   // Generate a random receipt ID as the API requires a unique ID
+//   var receiptId = "order" + Math.floor(Math.random()*1000);
 
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message:{
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "receipt",
-          recipient_name: "Peter Chang",
-          order_number: receiptId,
-          currency: "USD",
-          payment_method: "Visa 1234",        
-          timestamp: "1428444852", 
-          elements: [{
-            title: "Oculus Rift",
-            subtitle: "Includes: headset, sensor, remote",
-            quantity: 1,
-            price: 599.00,
-            currency: "USD",
-            image_url: SERVER_URL + "/assets/riftsq.png"
-          }, {
-            title: "Samsung Gear VR",
-            subtitle: "Frost White",
-            quantity: 1,
-            price: 99.99,
-            currency: "USD",
-            image_url: SERVER_URL + "/assets/gearvrsq.png"
-          }],
-          address: {
-            street_1: "1 Hacker Way",
-            street_2: "",
-            city: "Menlo Park",
-            postal_code: "94025",
-            state: "CA",
-            country: "US"
-          },
-          summary: {
-            subtotal: 698.99,
-            shipping_cost: 20.00,
-            total_tax: 57.67,
-            total_cost: 626.66
-          },
-          adjustments: [{
-            name: "New Customer Discount",
-            amount: -50
-          }, {
-            name: "$100 Off Coupon",
-            amount: -100
-          }]
-        }
-      }
-    }
-  };
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message:{
+//       attachment: {
+//         type: "template",
+//         payload: {
+//           template_type: "receipt",
+//           recipient_name: "Peter Chang",
+//           order_number: receiptId,
+//           currency: "USD",
+//           payment_method: "Visa 1234",        
+//           timestamp: "1428444852", 
+//           elements: [{
+//             title: "Oculus Rift",
+//             subtitle: "Includes: headset, sensor, remote",
+//             quantity: 1,
+//             price: 599.00,
+//             currency: "USD",
+//             image_url: SERVER_URL + "/assets/riftsq.png"
+//           }, {
+//             title: "Samsung Gear VR",
+//             subtitle: "Frost White",
+//             quantity: 1,
+//             price: 99.99,
+//             currency: "USD",
+//             image_url: SERVER_URL + "/assets/gearvrsq.png"
+//           }],
+//           address: {
+//             street_1: "1 Hacker Way",
+//             street_2: "",
+//             city: "Menlo Park",
+//             postal_code: "94025",
+//             state: "CA",
+//             country: "US"
+//           },
+//           summary: {
+//             subtotal: 698.99,
+//             shipping_cost: 20.00,
+//             total_tax: 57.67,
+//             total_cost: 626.66
+//           },
+//           adjustments: [{
+//             name: "New Customer Discount",
+//             amount: -50
+//           }, {
+//             name: "$100 Off Coupon",
+//             amount: -100
+//           }]
+//         }
+//       }
+//     }
+//   };
 
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
 
 /*
  * Send a message with Quick Reply buttons.
@@ -766,28 +766,28 @@ function sendTypingOff(recipientId) {
  * Send a message with the account linking call-to-action
  *
  */
-function sendAccountLinking(recipientId) {
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "button",
-          text: "Welcome. Link your account.",
-          buttons:[{
-            type: "account_link",
-            url: SERVER_URL + "/authorize"
-          }]
-        }
-      }
-    }
-  };  
+// function sendAccountLinking(recipientId) {
+//   var messageData = {
+//     recipient: {
+//       id: recipientId
+//     },
+//     message: {
+//       attachment: {
+//         type: "template",
+//         payload: {
+//           template_type: "button",
+//           text: "Welcome. Link your account.",
+//           buttons:[{
+//             type: "account_link",
+//             url: SERVER_URL + "/authorize"
+//           }]
+//         }
+//       }
+//     }
+//   };  
 
-  callSendAPI(messageData);
-}
+//   callSendAPI(messageData);
+// }
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
