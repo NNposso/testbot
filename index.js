@@ -608,7 +608,7 @@ function sendGenericMessage(recipientId) {
             image_url: SERVER_URL + "/assets/rift.png",
             buttons: [{
               type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/?raw=true",
+              url: "https://www.oculus.com/en-us/rift/",
               title: "Open Web URL"
             }, {
               type: "postback",
@@ -619,7 +619,7 @@ function sendGenericMessage(recipientId) {
             title: "touch",
             subtitle: "Your Hands, Now in VR",
             item_url: "https://www.oculus.com/en-us/touch/",               
-            image_url: SERVER_URL + "/assets/touch.png?raw=true",
+            image_url: SERVER_URL + "/assets/touch.png",
             buttons: [{
               type: "web_url",
               url: "https://www.oculus.com/en-us/touch/",
