@@ -472,67 +472,67 @@ function sendGifMessage(recipientId) {
  * Send audio using the Send API.
  *
  */
-// function sendAudioMessage(recipientId) {
-//   var messageData = {
-//     recipient: {
-//       id: recipientId
-//     },
-//     message: {
-//       attachment: {
-//         type: "audio",
-//         payload: {
-//           url: SERVER_URL + "/assets/sample.mp3"
-//         }
-//       }
-//     }
-//   }
+function sendAudioMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "audio",
+        payload: {
+          url: SERVER_URL + "/assets/sample.mp3?raw=true"
+        }
+      }
+    }
+  }
 
-//   callSendAPI(messageData)
-// }
-
-/*
- * Send a video using the Send API.
- *
- */
-// function sendVideoMessage(recipientId) {
-//   var messageData = {
-//     recipient: {
-//       id: recipientId
-//     },
-//     message: {
-//       attachment: {
-//         type: "video",
-//         payload: {
-//           url: SERVER_URL + "/assets/allofus480.mov"
-//         }
-//       }
-//     }
-//   }
-
-//   callSendAPI(messageData)
-// }
+  callSendAPI(messageData)
+}
 
 /*
  * Send a video using the Send API.
  *
  */
-// function sendFileMessage(recipientId) {
-//   var messageData = {
-//     recipient: {
-//       id: recipientId
-//     },
-//     message: {
-//       attachment: {
-//         type: "file",
-//         payload: {
-//           url: SERVER_URL + "/assets/test.txt"
-//         }
-//       }
-//     }
-//   }
+function sendVideoMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "video",
+        payload: {
+          url: SERVER_URL + "/assets/allofus480.mov?raw=true"
+        }
+      }
+    }
+  }
 
-//   callSendAPI(messageData)
-// }
+  callSendAPI(messageData)
+}
+
+/*
+ * Send a video using the Send API.
+ *
+ */
+function sendFileMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "file",
+        payload: {
+          url: SERVER_URL + "/assets/test.txt"
+        }
+      }
+    }
+  }
+
+  callSendAPI(messageData)
+}
 
 /*
  * Send a text message using the Send API.
