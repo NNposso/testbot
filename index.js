@@ -265,7 +265,7 @@ function receivedMessage(event) {
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload)
 
-    sendTextMessage(senderID, "Quick reply tapped")
+    sendTextMessage(senderID, quickReplyPayload)
     return
   }
 
@@ -719,13 +719,11 @@ function sendQuickReply(recipientId) {
       quick_replies: [
         {
           "content_type":"text",
-          "type":"postback",
           "title":"Action",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
         },
         {
           "content_type":"text",
-          "type":"postback",
           "title":"Comedy",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
         },
