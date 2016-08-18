@@ -807,7 +807,7 @@ function sendAccountLinking(recipientId) {
           text: "Welcome. Link your account.",
           buttons:[{
             type: "account_link",
-            url: SERVER_URL + "/authorize"
+            url: SERVER_URL + "/assets/authorize"
           }]
         }
       }
