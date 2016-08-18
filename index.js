@@ -720,17 +720,17 @@ function sendQuickReply(recipientId) {
         {
           "content_type":"text",
           "title":"Action",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
+          "payload":"It so exiting"
         },
         {
           "content_type":"text",
           "title":"Comedy",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
+	  "payload":"It so funny"
         },
         {
           "content_type":"text",
           "title":"Drama",
-          "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
+	  "payload":"It so sad"
         }
       ]
     }
