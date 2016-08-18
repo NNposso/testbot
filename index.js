@@ -144,23 +144,23 @@ app.get('/webhook', function(req, res) {
  * (sendAccountLinking) is pointed to this URL. 
  * 
  */
-// app.get('/authorize', function(req, res) {
-//   var accountLinkingToken = req.query['account_linking_token']
-//   var redirectURI = req.query['redirect_uri']
+app.get('/authorize', function(req, res) {
+  var accountLinkingToken = req.query['account_linking_token']
+  var redirectURI = req.query['redirect_uri']
 
-//   // Authorization Code should be generated per user by the developer. This will 
-//   // be passed to the Account Linking callback.
-//   var authCode = "1234567890"
+  // Authorization Code should be generated per user by the developer. This will 
+  // be passed to the Account Linking callback.
+  var authCode = "1234567890"
 
-//   // Redirect users to this URI on successful login
-//   var redirectURISuccess = redirectURI + "&authorization_code=" + authCode
+  // Redirect users to this URI on successful login
+  var redirectURISuccess = redirectURI + "&authorization_code=" + authCode
 
-//   res.render('authorize', {
-//     accountLinkingToken: accountLinkingToken,
-//     redirectURI: redirectURI,
-//     redirectURISuccess: redirectURISuccess
-//   })
-// })
+  res.render('authorize', {
+    accountLinkingToken: accountLinkingToken,
+    redirectURI: redirectURI,
+    redirectURISuccess: redirectURISuccess
+  })
+})
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from 
@@ -200,26 +200,26 @@ app.get('/webhook', function(req, res) {
  * https://developers.facebook.com/docs/messenger-platform/webhook-reference/authentication
  *
  */
-// function receivedAuthentication(event) {
-//   var senderID = event.sender.id
-//   var recipientID = event.recipient.id
-//   var timeOfAuth = event.timestamp
+function receivedAuthentication(event) {
+  var senderID = event.sender.id
+  var recipientID = event.recipient.id
+  var timeOfAuth = event.timestamp
 
-//   // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
-//   // The developer can set this to an arbitrary value to associate the 
-//   // authentication callback with the 'Send to Messenger' click event. This is
-//   // a way to do account linking when the user clicks the 'Send to Messenger' 
-//   // plugin.
-//   var passThroughParam = event.optin.ref
+  // The 'ref' field is set in the 'Send to Messenger' plugin, in the 'data-ref'
+  // The developer can set this to an arbitrary value to associate the 
+  // authentication callback with the 'Send to Messenger' click event. This is
+  // a way to do account linking when the user clicks the 'Send to Messenger' 
+  // plugin.
+  var passThroughParam = event.optin.ref
 
-//   console.log("Received authentication for user %d and page %d with pass " +
-//     "through param '%s' at %d", senderID, recipientID, passThroughParam, 
-//     timeOfAuth)
+  console.log("Received authentication for user %d and page %d with pass " +
+    "through param '%s' at %d", senderID, recipientID, passThroughParam, 
+    timeOfAuth)
 
-//   // When an authentication is received, we'll send a message back to the sender
-//   // to let them know it was successful.
-//   sendTextMessage(senderID, "Authentication successful")
-// }
+  // When an authentication is received, we'll send a message back to the sender
+  // to let them know it was successful.
+  sendTextMessage(senderID, "Authentication successful")
+}
 
 /*
  * Message Event
@@ -794,28 +794,28 @@ function sendTypingOff(recipientId) {
  * Send a message with the account linking call-to-action
  *
  */
-// function sendAccountLinking(recipientId) {
-//   var messageData = {
-//     recipient: {
-//       id: recipientId
-//     },
-//     message: {
-//       attachment: {
-//         type: "template",
-//         payload: {
-//           template_type: "button",
-//           text: "Welcome. Link your account.",
-//           buttons:[{
-//             type: "account_link",
-//             url: SERVER_URL + "/authorize"
-//           }]
-//         }
-//       }
-//     }
-//   }  
+function sendAccountLinking(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          text: "Welcome. Link your account.",
+          buttons:[{
+            type: "account_link",
+            url: SERVER_URL + "/authorize"
+          }]
+        }
+      }
+    }
+  }  
 
-//   callSendAPI(messageData)
-// }
+  callSendAPI(messageData)
+}
 
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll 
