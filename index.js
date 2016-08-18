@@ -719,16 +719,19 @@ function sendQuickReply(recipientId) {
       quick_replies: [
         {
           "content_type":"text",
+          "type":"postback",
           "title":"Action",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION"
         },
         {
           "content_type":"text",
+          "type":"postback",
           "title":"Comedy",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY"
         },
         {
           "content_type":"text",
+          "type":"postback",
           "title":"Drama",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
         }
