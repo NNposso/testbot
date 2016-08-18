@@ -40,9 +40,9 @@ const token = process.env.MESSENGER_PAGE_ACCESS_TOKEN
 
 // URL where the app is running (include protocol). Used to point to scripts and 
 // assets located at this address. 
-// const SERVER_URL = (process.env.SERVER_URL) ?
-//   (process.env.SERVER_URL) :
-//   config.get('serverURL')
+const SERVER_URL = (process.env.SERVER_URL) ?
+  (process.env.SERVER_URL) :
+  config.get('serverURL')
 
 // if (!(APP_SECRET && VALIDATION_TOKEN && PAGE_ACCESS_TOKEN && SERVER_URL)) {
 //   console.error("Missing config values")
@@ -605,7 +605,7 @@ function sendGenericMessage(recipientId) {
             title: "rift",
             subtitle: "Next-generation virtual reality",
             item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+            image_url: SERVER_URL + "/assets/rift.png",
             buttons: [{
               type: "web_url",
               url: "https://www.oculus.com/en-us/rift/",
@@ -619,7 +619,7 @@ function sendGenericMessage(recipientId) {
             title: "touch",
             subtitle: "Your Hands, Now in VR",
             item_url: "https://www.oculus.com/en-us/touch/",               
-            image_url: "http://messengerdemo.parseapp.com/img/gearvr.png",
+            image_url: SERVER_URL + "/assets/touch.png",
             buttons: [{
               type: "web_url",
               url: "https://www.oculus.com/en-us/touch/",
