@@ -428,45 +428,45 @@ function receivedPostback(event) {
  * Send an image using the Send API.
  *
  */
-// function sendImageMessage(recipientId) {
-//   var messageData = {
-//     recipient: {
-//       id: recipientId
-//     },
-//     message: {
-//       attachment: {
-//         type: "image",
-//         payload: {
-//           url: SERVER_URL + "/assets/rift.png"
-//         }
-//       }
-//     }
-//   }
+function sendImageMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          url: SERVER_URL + "/assets/rift.png?raw=true"
+        }
+      }
+    }
+  }
 
-//   callSendAPI(messageData)
-// }
+  callSendAPI(messageData)
+}
 
 /*
  * Send a Gif using the Send API.
  *
  */
-// function sendGifMessage(recipientId) {
-//   var messageData = {
-//     recipient: {
-//       id: recipientId
-//     },
-//     message: {
-//       attachment: {
-//         type: "image",
-//         payload: {
-//           url: SERVER_URL + "/assets/instagram_logo.gif"
-//         }
-//       }
-//     }
-//   }
+function sendGifMessage(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      attachment: {
+        type: "image",
+        payload: {
+          url: SERVER_URL + "/assets/instagram_logo.gif?raw=true"
+        }
+      }
+    }
+  }
 
-//   callSendAPI(messageData)
-// }
+  callSendAPI(messageData)
+}
 
 /*
  * Send audio using the Send API.
