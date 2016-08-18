@@ -729,7 +729,6 @@ function sendQuickReply(recipientId) {
         },
         {
           "content_type":"text",
-          "type":"postback",
           "title":"Drama",
           "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA"
         }
